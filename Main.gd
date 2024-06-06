@@ -90,3 +90,9 @@ func _process(delta):
 func _on_ResetButton_pressed():
 	for cell in cells:
 		cell.get_node("Label").text = ""
+
+func _input(event):
+	#For fixing the holding down problem when releasing the mouse button outside of the cells
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+			isMouseDown = false
