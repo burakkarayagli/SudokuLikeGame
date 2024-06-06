@@ -9,6 +9,9 @@ var cells = []
 var isMouseDown = false
 var changedCells = []
 
+#Feature for changing the same cell types while holding
+var initialCellState = ""
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -36,14 +39,14 @@ func _on_cell_input_event(viewport, event, shape_idx, cell):
 			isMouseDown = event.pressed
 			if not isMouseDown:
 				if cell not in changedCells:
-					print("Mouse released")
 					changeCellText(cell)
 					showCellLabel(cell)
 					changedCells.append(cell)
 				changedCells = []
+			else:
+				initialCellState = cell.get_node("Label").text
 				
 	elif event is InputEventMouseMotion and isMouseDown:
-		print("Mouse is holding down and moving")
 		if cell not in changedCells:
 			changeCellTextWhileHolding(cell)
 			showCellLabel(cell)
@@ -60,10 +63,11 @@ func changeCellText(cell):
 
 func changeCellTextWhileHolding(cell):
 	var label = cell.get_node("Label")
-	if label.text == "":
-		label.text = "x"
-	elif label.text == "x":
-		label.text = ""
+	if label.text == initialCellState:
+		if label.text == "":
+			label.text = "x"
+		elif label.text == "x":
+			label.text = ""
 
 func showCellLabel(cell):
 	$CellClickLabel.text = str("Entered cell at row:", cell.row_index, "column:", cell.col_index)
@@ -84,6 +88,7 @@ func _on_click_timer_timeout():
 
 
 func _process(delta):
+	print(initialCellState)
 	if click_timer != null:
 		$Label.text = str(click_timer.get_time_left())
 
