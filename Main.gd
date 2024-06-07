@@ -88,7 +88,6 @@ func _on_click_timer_timeout():
 
 
 func _process(delta):
-	print(initialCellState)
 	if click_timer != null:
 		$Label.text = str(click_timer.get_time_left())
 

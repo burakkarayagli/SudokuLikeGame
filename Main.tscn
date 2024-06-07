@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bbbl1a7w17abl"]
+[gd_scene load_steps=3 format=3 uid="uid://bbbl1a7w17abl"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://u7q34gaww4sd" path="res://LevelEditor.tscn" id="2_rmb0h"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1")
@@ -30,5 +31,11 @@ offset_top = 119.0
 offset_right = 832.0
 offset_bottom = 139.0
 text = "Reset"
+
+[node name="LevelEditor" parent="." instance=ExtResource("2_rmb0h")]
+offset_left = 757.0
+offset_top = 419.0
+offset_right = -20.0
+offset_bottom = -19.0
 
 [connection signal="pressed" from="ResetButton" to="." method="_on_ResetButton_pressed"]
