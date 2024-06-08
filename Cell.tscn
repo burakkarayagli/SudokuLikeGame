@@ -12,7 +12,8 @@ script = ExtResource("1")
 position = Vector2(32, 32)
 shape = SubResource("RectangleShape2D_uhxp4")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="Panel" parent="."]
+custom_minimum_size = Vector2(64, 64)
 offset_right = 64.0
 offset_bottom = 64.0
 mouse_filter = 2

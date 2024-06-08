@@ -1,6 +1,6 @@
 res://default_env.tres
 res://Main.tscn
+res://LevelEditor.gd
 res://Cell.tscn
 res://LevelEditor.tscn
-res://LevelEditor.gd
 res://Cell.gd

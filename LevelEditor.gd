@@ -15,11 +15,15 @@ var selected_color = null;
 
 var row = 9
 var column = 9
-var cell_size = 64
 var Cell_scene = preload("res://Cell.tscn")
+var cell_size = 64
 var cells = []
+var cell_colors = []
 var changed_cells = []
 var isMouseDown = false
+
+var default_border_width = 1.5
+var no_border_width = 0.5
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	init_grids()
@@ -64,31 +68,19 @@ func highlight_color_rect(color_rect):
 	selected_color_rect = color_rect
 
 func init_grids():
-	var offset_x = 0
-	var offset_y = 0
 	for i in range(row):
-		offset_x = 0
-		offset_y += 2
+		cell_colors.append([])
 		for j in range(column):
-			offset_x += 2
 			var cell = Cell_scene.instantiate()
 			cell.row_index = i
 			cell.col_index = j
-			cell.position = Vector2(cell_size * j, cell_size * i) + Vector2(offset_x, offset_y)
+			cell.position = Vector2(cell_size * j, cell_size * i) + Vector2(0, 0)
 			cells.append(cell)
+			cell_colors[i].append(green)
 			add_child(cell)
-			cell.connect("input_event", Callable(self, "_on_cell_input_event2").bind(cell))
+			cell.connect("input_event", Callable(self, "_on_cell_input_event").bind(cell))
 
 func _on_cell_input_event(viewport, event, shape_idx, cell):
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.pressed:
-				change_cell_color(cell)
-				
-	elif event is InputEventMouseMotion:
-		pass
-
-func _on_cell_input_event2(viewport, event, shape_idx, cell):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			isMouseDown = event.pressed
@@ -105,7 +97,62 @@ func _on_cell_input_event2(viewport, event, shape_idx, cell):
 
 func change_cell_color(cell):
 	cell.update_color(selected_color)
+	cell_colors[cell.row_index][cell.col_index] = selected_color
+	update_borders()
 	
+func update_borders():
+	for i in range(len(cells)):
+		var cell = cells[i]
+		
+		var top_cell = null
+		var right_cell = null
+		var bottom_cell = null
+		var left_cell = null
+		
+		#### OUTLINE BORDERS #####
+		if i % column == 0: #Left border
+			cell.update_left_border(default_border_width)
+		else:
+			left_cell = cells[i-1]
+		if i < column: #Top border
+			cell.update_top_border(default_border_width)
+		else:
+			top_cell = cells[i-column]
+		if i % column == column-1: #Right border
+			cell.update_right_border(default_border_width)
+		else:
+			right_cell = cells[i+1]
+		if i >= (row-1)*column: #Bottom border
+			cell.update_bottom_border(default_border_width)
+		else:
+			bottom_cell = cells[i+column]
+		################################
+		
+		var cell_color = cell.get_color()
+		
+		
+		if top_cell:
+			if cell_color != top_cell.get_color():
+				cell.update_top_border(default_border_width)
+			else:
+				cell.update_top_border(no_border_width)
+		
+		if right_cell:
+			if cell_color != right_cell.get_color():
+				cell.update_right_border(default_border_width)
+			else:
+				cell.update_right_border(no_border_width)
+		if bottom_cell:
+			if cell_color != bottom_cell.get_color():
+				cell.update_bottom_border(default_border_width)
+			else:
+				cell.update_bottom_border(no_border_width)
+		if left_cell:
+			if cell_color != left_cell.get_color():
+				cell.update_left_border(default_border_width)
+			else:
+				cell.update_left_border(no_border_width)
+
 func _input(event):
 	#For fixing the holding down problem when releasing the mouse button outside of the cells
 	if event is InputEventMouseButton:
