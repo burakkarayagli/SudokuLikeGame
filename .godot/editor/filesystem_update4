@@ -3,3 +3,4 @@ res://Main.tscn
 res://Cell.tscn
 res://LevelEditor.tscn
 res://LevelEditor.gd
+res://Cell.gd

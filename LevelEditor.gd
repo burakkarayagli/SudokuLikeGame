@@ -11,6 +11,7 @@ const pink = Color("#dfa0bf")
 const aqua = Color("#a3d2d8")
 
 var selected_color_rect = null
+var selected_color = null;
 
 var row = 9
 var column = 9
@@ -41,6 +42,8 @@ func _on_ColorRect_gui_input(event, color_rectangle):
 	
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		highlight_color_rect(color_rectangle)
+		selected_color = color_rectangle.get_theme_stylebox("panel").bg_color
+		
 
 func highlight_color_rect(color_rect):
 	if selected_color_rect != null:
@@ -72,3 +75,15 @@ func init_grids():
 			cells.append(cell)
 			add_child(cell)
 			cell.connect("input_event", Callable(self, "_on_cell_input_event").bind(cell))
+
+func _on_cell_input_event(viewport, event, shape_idx, cell):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				change_cell_color(cell)
+				
+	elif event is InputEventMouseMotion:
+		pass
+
+func change_cell_color(cell):
+	cell.update_color(selected_color)
