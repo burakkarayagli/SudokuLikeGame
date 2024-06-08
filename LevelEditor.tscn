@@ -8,21 +8,16 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 1.0
-offset_right = -777.0
-offset_bottom = -437.0
+offset_right = -1152.0
+offset_bottom = -647.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_raty4")
 
 [node name="ColorsContainer" type="GridContainer" parent="."]
 layout_mode = 0
-offset_left = 726.0
-offset_top = 10.0
-offset_right = 766.0
-offset_bottom = 50.0
+offset_left = 618.0
+offset_top = 20.0
+offset_right = 658.0
+offset_bottom = 60.0
 columns = 5
-
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0

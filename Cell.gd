@@ -26,5 +26,5 @@ func _on_mouse_exited():
 # Function to update the visual color of the cell
 func update_color(new_color):
 	cell_color = new_color
-	$ColorRect.color = new_color.darkened(0)
+	$ColorRect.color = new_color
 	

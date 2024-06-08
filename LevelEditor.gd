@@ -18,7 +18,8 @@ var column = 9
 var cell_size = 64
 var Cell_scene = preload("res://Cell.tscn")
 var cells = []
-
+var changed_cells = []
+var isMouseDown = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	init_grids()
@@ -37,6 +38,8 @@ func createColorRectangles():
 		
 		$ColorsContainer.add_child(color_rectangle)
 		color_rectangle.connect("gui_input", Callable(self, "_on_ColorRect_gui_input").bind(color_rectangle))
+		highlight_color_rect($ColorsContainer.get_child(0))
+		selected_color = colors[0]
 
 func _on_ColorRect_gui_input(event, color_rectangle):
 	
@@ -74,7 +77,7 @@ func init_grids():
 			cell.position = Vector2(cell_size * j, cell_size * i) + Vector2(offset_x, offset_y)
 			cells.append(cell)
 			add_child(cell)
-			cell.connect("input_event", Callable(self, "_on_cell_input_event").bind(cell))
+			cell.connect("input_event", Callable(self, "_on_cell_input_event2").bind(cell))
 
 func _on_cell_input_event(viewport, event, shape_idx, cell):
 	if event is InputEventMouseButton:
@@ -85,5 +88,26 @@ func _on_cell_input_event(viewport, event, shape_idx, cell):
 	elif event is InputEventMouseMotion:
 		pass
 
+func _on_cell_input_event2(viewport, event, shape_idx, cell):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			isMouseDown = event.pressed
+			if not isMouseDown:
+				if cell not in changed_cells:
+					change_cell_color(cell)
+					changed_cells.append(cell)
+				changed_cells = []
+				
+	elif event is InputEventMouseMotion and isMouseDown:
+		if cell not in changed_cells:
+			change_cell_color(cell)
+			changed_cells.append(cell)
+
 func change_cell_color(cell):
 	cell.update_color(selected_color)
+	
+func _input(event):
+	#For fixing the holding down problem when releasing the mouse button outside of the cells
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+			isMouseDown = false
