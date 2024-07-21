@@ -13,8 +13,8 @@ const aqua = Color("#a3d2d8")
 var selected_color_rect = null
 var selected_color = null;
 
-var row = 9
-var column = 9
+var row = 11
+var column = 11
 var Cell_scene = preload("res://Cell.tscn")
 var cell_size = 64
 var cells = []
@@ -22,8 +22,8 @@ var cell_colors = []
 var changed_cells = []
 var isMouseDown = false
 
-var default_border_width = 1.5
-var no_border_width = 0.5
+var default_border_width = 2
+var no_border_width = 1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	init_grids()

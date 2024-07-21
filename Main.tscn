@@ -33,9 +33,9 @@ offset_bottom = 139.0
 text = "Reset"
 
 [node name="LevelEditor" parent="." instance=ExtResource("2_rmb0h")]
-offset_left = 757.0
-offset_top = 419.0
-offset_right = -20.0
-offset_bottom = -19.0
+offset_left = 443.0
+offset_top = 298.0
+offset_right = -334.0
+offset_bottom = -140.0
 
 [connection signal="pressed" from="ResetButton" to="." method="_on_ResetButton_pressed"]
